@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('monobank_payments', function (Blueprint $table) {
             $table->id();
-            $table->text('x_sign')->nullable();
             $table->string('invoiceId')->unique();
             $table->string('status');
             $table->unsignedInteger('amount');
