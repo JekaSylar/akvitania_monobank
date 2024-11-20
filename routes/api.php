@@ -2,10 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MonobankPaymentController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
 
-Route::post('webhookmonobank', MonobankPaymentController::class)->name('mono.webhook');
+Route::post('/monobank', MonobankPaymentController::class)->name('mono.webhook');
