@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MonobankPaymentMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\MonobankPayment;
+use Illuminate\Support\Facades\Mail;
 
 class MonobankPaymentController extends Controller
 {
@@ -13,7 +15,7 @@ class MonobankPaymentController extends Controller
      */
     public function __invoke(Request $request)
     {
-       Log::info('Webhook payload:', $request->json()->all());
+
 
         $invoiceId = $request->invoiceId;
         $status = $request->status;
@@ -36,7 +38,8 @@ class MonobankPaymentController extends Controller
                 'status' => $status,
             ]);
             if ($payment->status == 'success') {
-                Log::info('Webhook Success:');
+                $email = env('MAIL_TO_ADDRESS');
+                Mail::to($email)->queue(new MonobankPaymentMail($reference, $amount, $destination));
             }
         }
 
